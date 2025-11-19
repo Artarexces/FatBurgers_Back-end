@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'prisma/prisma.service';
 import { CreateMenuItemDto } from './DTO/create-menu-item.dto';
 import { UpdateMenuItemtDto } from './DTO/update-menu-item.dto';
 
@@ -8,7 +8,7 @@ export class MenuService {
     constructor(private prisma: PrismaService){}
 
     async listAll(){
-        return this.prisma.menuItem.findMany({ orderBy: { createdAt: 'desc'} })
+        return this.prisma.menuItem.findMany()
     }
 
     async listAvailable(){
@@ -33,7 +33,7 @@ export class MenuService {
 
     async remove(id: string){
         await this.getById(id)
-        await this.prisma.menuItem.remove({ where: { id } })
+        await this.prisma.menuItem.delete({ where: { id } })
         return { success: true }
     }
 }

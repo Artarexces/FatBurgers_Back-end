@@ -1,5 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// --------------------------------------
+// PRISMA SCHEMA — MODO DESARROLLO
+// --------------------------------------
 
 generator client {
   provider = "prisma-client-js"
@@ -10,48 +11,43 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Product {
-  id          Int      @id @default(autoincrement())
+model MenuItem {
+  id          String      @id @default(uuid())
   name        String
   description String?
-  price       Float
+  price       Int
   category    String
   image       String?
-  isAvailable Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  available   Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
 
-  // Relations
-  orderItems OrderItem[]
-
-  @@map("products")
+  @@map("menu_items")
 }
 
 model Order {
-  id          Int         @id @default(autoincrement())
-  status      OrderStatus @default(PENDING)
-  total       Float
-  customer    String
-  phone       String
-  address     String?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id        String      @id @default(uuid())
+  status    OrderStatus @default(PENDING)
+  total     Float
+  customer  String
+  phone     String
+  address   String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
-  // Relations
   items OrderItem[]
-
-  @@map("orders")
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  quantity  Int
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId   Int
+  id       String @id @default(uuid())
+  quantity Int
 
-  @@map("order_items")
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  menuItemId String
+
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId String
 }
 
 enum OrderStatus {
@@ -61,6 +57,4 @@ enum OrderStatus {
   READY
   DELIVERED
   CANCELLED
-
-  @@map("order_status")
 }

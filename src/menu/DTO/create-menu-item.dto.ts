@@ -1,13 +1,13 @@
 import { 
     IsString,
-    IsNumber,
     IsOptional,
     IsBoolean,
     Min,
-    IsUrl 
+    IsUrl, 
+    IsInt
 } from "class-validator";
 
-export class CreateProductDto {
+export class CreateMenuItemDto {
     @IsString()
     name: string;
 
@@ -15,7 +15,7 @@ export class CreateProductDto {
     @IsOptional()
     description?: string;
 
-    @IsNumber()
+    @IsInt()
     @Min(0)
     price: number;
     
@@ -28,6 +28,6 @@ export class CreateProductDto {
 
     @IsOptional()
     @IsBoolean()
-    stock?: boolean;
+    available?: boolean;
 
 }

@@ -11,27 +11,44 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+//
+// MODELOS
+//
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  orders Order[]
+}
+
 model MenuItem {
-  id          String      @id @default(uuid())
+  id          String   @id @default(cuid())
   name        String
   description String?
   price       Int
   category    String
   image       String?
-  available   Boolean     @default(true)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  orderItems  OrderItem[]
+  available   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
 
   @@map("menu_items")
 }
 
 model Order {
-  id        String      @id @default(uuid())
+  id String @id @default(cuid())
+
+  // Relación con usuario
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  total     Int
   status    OrderStatus @default(PENDING)
-  total     Float
-  customer  String
-  phone     String
   address   String?
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
@@ -40,14 +57,15 @@ model Order {
 }
 
 model OrderItem {
-  id       String @id @default(uuid())
-  quantity Int
+  id String @id @default(cuid())
 
-  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
-  menuItemId String
-
-  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  quantity   Int
+  unitPrice  Int
 }
 
 enum OrderStatus {

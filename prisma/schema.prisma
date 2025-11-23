@@ -12,6 +12,15 @@ datasource db {
 }
 
 //
+// ENUMS
+//
+
+enum Taste {
+  VEGGIE
+  CARNE
+}
+
+//
 // MODELOS
 //
 
@@ -20,6 +29,8 @@ model User {
   name      String
   email     String   @unique
   createdAt DateTime @default(now())
+
+  taste     Taste    @default(CARNE)
 
   orders Order[]
 }

@@ -2,8 +2,10 @@ import {
     IsString,
     IsOptional,
     IsEmail,
-    IsBoolean
+    IsEnum
  } from "class-validator";
+
+ import { Taste } from "@prisma/client";
 
  export class createUserDto {
 
@@ -14,6 +16,6 @@ import {
     email: string;
 
     @IsOptional()
-    @IsBoolean()
-    taste?: boolean;
+    @IsEnum(Taste)
+    taste?: Taste;
  }

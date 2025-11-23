@@ -10,7 +10,7 @@ export class UsersService {
         return this.prisma.user.findMany()
     }
 
-    async findByEmail(email: string){
+    async getByEmail(email: string){
         return this.prisma.user.findUnique({ where : {email} })
     }
 

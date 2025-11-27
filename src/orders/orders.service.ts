@@ -10,6 +10,11 @@ export class OrdersService {
     ) {}
 
     async getAllOrders(){
-        
+        return this.prisma.order.findMany({
+            include: {
+                user: true,
+                items: true,
+            }
+        });
     }
 }

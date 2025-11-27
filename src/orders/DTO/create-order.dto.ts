@@ -25,8 +25,16 @@ class OrderItemDto {
     quantity: number;
 }
 
-class CreateOrderDto {
+export class CreateOrderDto {
 
-    @IsOptional()
-    @IsString()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UserInfoDto)
+  user?: UserInfoDto;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => OrderItemDto)
+  items: OrderItemDto[];
+  
 }

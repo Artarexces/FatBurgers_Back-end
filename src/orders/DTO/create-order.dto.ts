@@ -1,7 +1,21 @@
-import { IsOptional, IsString, IsArray, ValidateNested, IsInt, Min } from "class-validator"
+import { IsOptional, IsString, IsArray, ValidateNested, IsInt, Min, IsEnum, IsEmail } from "class-validator"
 import { Type } from "class-transformer"
+import { Taste } from "@prisma/client";
 
-class OrdenItemDto {
+class UserInfoDto {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsOptional()
+  @IsEnum(Taste)
+  taste?: Taste;
+}
+
+class OrderItemDto {
     
     @IsString()
     menuItemId: string;
@@ -9,4 +23,10 @@ class OrdenItemDto {
     @IsInt()
     @Min(1)
     quantity: number;
+}
+
+class CreateOrderDto {
+
+    @IsOptional()
+    @IsString()
 }
